@@ -5,7 +5,9 @@ module Pullmatic
     describe Server do
       describe ".execute" do
         it "should generate server" do
-          expect(described_class.execute).to eq({:os_name => "hoge", :architecture => "x86_64"})
+          expect(described_class.execute).to eq({:os_info => {:family => "ubuntu",
+                                                              :release => "14.04",
+                                                              :arch => "x86_64"}})
         end
       end
     end
