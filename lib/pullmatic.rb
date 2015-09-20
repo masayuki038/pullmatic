@@ -8,6 +8,7 @@ require 'specinfra/backend'
 require "pullmatic/version"
 require "pullmatic/cli"
 require "pullmatic/resource/server"
+require "pullmatic/resource/filesystem"
 
 include Specinfra::Helper::Set
 
