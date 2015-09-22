@@ -9,6 +9,7 @@ require "pullmatic/version"
 require "pullmatic/cli"
 require "pullmatic/resource/server"
 require "pullmatic/resource/filesystem"
+require "pullmatic/resource/interface"
 
 include Specinfra::Helper::Set
 
