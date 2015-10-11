@@ -10,7 +10,7 @@ module Pullmatic
           described_class.new.invoke(command, [], {})
         end
       end
-      
+
       before do
         allow(klass).to receive(:execute).and_return({})
       end

@@ -8,14 +8,14 @@ module Pullmatic
       def execute
         fs = host_inventory['filesystem']
         partitions = fs.map do |dev, spec|
-          [[:name, dev], [:mount, spec["mount"]], [:type, spec["type"]], [:size, spec["kb_size"].to_i]].to_h
+          [[:name, dev], [:mount, spec["mount"]], [:type, spec["type"]], [:kb_size, spec["kb_size"].to_i], [:kb_used, spec["kb_used"].to_i], [:kb_available, spec["kb_available"].to_i], [:percent_used, spec["percent_used"]], [:mount, spec["mount"]]].to_h
         end
         {:filesystem => partitions}
       end
     end
   end
 end
-          
+
 class Specinfra::Command::Linux::Base::Inventory
   class << self
     def get_filesystem
