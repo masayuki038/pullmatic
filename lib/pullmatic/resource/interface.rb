@@ -40,7 +40,7 @@ module Specinfra
         ret.split("\n").each do |l|
           name = $2 if l =~ /^(\d+):\s(\w+):/
           ipv4 = $1 if l =~ /^\s+inet\s([0-9.\/]+)/
-          ipv6 = $1 if l =~ /^\s+inet6\s([0-9.\/]+)/
+          ipv6 = $1 if l =~ /^\s+inet6\s([0-9a-f:.\/]+)/
           ifs[name] = {:ipv4 => ipv4, :ipv6 => ipv6}
         end
         ifs
