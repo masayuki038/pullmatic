@@ -9,7 +9,8 @@ module Pullmatic
         hosts = host_inventory['hosts']
         default_gateway = host_inventory['default_gateway']
         filter = host_inventory['iptables_filter']
-        {:hosts => hosts, :default_gateway => default_gateway, :iptables => {:filter => filter}}
+        nat = host_inventory['iptables_nat']
+        {:hosts => hosts, :default_gateway => default_gateway, :iptables => {:filter => filter, :nat => nat}}
       end
     end
   end
@@ -27,6 +28,10 @@ class Specinfra::Command::Linux::Base::Inventory
 
     def get_iptables_filter
       '/sbin/iptables -L'
+    end
+
+    def get_iptables_nat
+      '/sbin/iptables -t nat -L'
     end
   end
 end
@@ -73,17 +78,7 @@ module Specinfra
       end
     end
 
-    class IptablesFilter < Base
-      def get
-        cmd = backend.command.get(:get_inventory_iptables_filter)
-        ret = backend.run_command(cmd)
-        if ret.exit_status == 0
-          parse(ret.stdout)
-        else
-          nil
-        end
-      end
-
+    class IptablesBase < Base
       def parse(ret)
         entries = {}
         chain = nil
@@ -95,11 +90,39 @@ module Specinfra
             chain = :forward
           when /^Chain OUTPUT/
             chain = :output
+          when /^Chain PREROUTING/
+            chain = :prerouting
+          when /^Chain POSTROUTING/
+            chain = :postrouting
           end
           entries[chain] ||= ""
           entries[chain] << l
         end
         entries
+      end
+    end
+
+    class IptablesFilter < IptablesBase
+      def get
+        cmd = backend.command.get(:get_inventory_iptables_filter)
+        ret = backend.run_command(cmd)
+        if ret.exit_status == 0
+          parse(ret.stdout)
+        else
+          nil
+        end
+      end
+    end
+
+    class IptablesNat < IptablesBase
+      def get
+        cmd = backend.command.get(:get_inventory_iptables_nat)
+        ret = backend.run_command(cmd)
+        if ret.exit_status == 0
+          parse(ret.stdout)
+        else
+          nil
+        end
       end
     end
   end
