@@ -8,7 +8,8 @@ module Pullmatic
       def execute
         hosts = host_inventory['hosts']
         default_gateway = host_inventory['default_gateway']
-        iptables = host_inventory['iptables']
+        filter = host_inventory['iptables_filter']
+        {:hosts => hosts, :default_gateway => default_gateway, :iptables => {:filter => filter}}
       end
     end
   end
@@ -24,8 +25,8 @@ class Specinfra::Command::Linux::Base::Inventory
       '/sbin/ip route'
     end
 
-    def get_iptables
-      '/sbin/iptables'
+    def get_iptables_filter
+      '/sbin/iptables -L'
     end
   end
 end
@@ -46,12 +47,12 @@ module Specinfra
       def parse(ret)
         entries = []
         ret.split("\n").each do |l|
-          entries << l if l =~ /^[^#]+/ 
+          entries << l if l =~ /^[^#]+/
         end
-        ifs
+        entries
       end
     end
-    
+
     class DefaultGateway < Base
       def get
         cmd = backend.command.get(:get_inventory_default_gateway)
@@ -64,10 +65,41 @@ module Specinfra
       end
 
       def parse(ret)
+        entries = []
         ret.split("\n").each do |l|
-          return l if  l =~ /^default/
+          entries << l if  l =~ /^default/
         end
-        nil
+        entries
+      end
+    end
+
+    class IptablesFilter < Base
+      def get
+        cmd = backend.command.get(:get_inventory_iptables_filter)
+        ret = backend.run_command(cmd)
+        if ret.exit_status == 0
+          parse(ret.stdout)
+        else
+          nil
+        end
+      end
+
+      def parse(ret)
+        entries = {}
+        chain = nil
+        ret.each_line do |l|
+          case l
+          when /^Chain INPUT/
+            chain = :input
+          when /^Chain FORWARD/
+            chain = :forward
+          when /^Chain OUTPUT/
+            chain = :output
+          end
+          entries[chain] ||= ""
+          entries[chain] << l
+        end
+        entries
       end
     end
   end

@@ -10,6 +10,7 @@ require "pullmatic/cli"
 require "pullmatic/resource/server"
 require "pullmatic/resource/filesystem"
 require "pullmatic/resource/interface"
+require "pullmatic/resource/network"
 
 include Specinfra::Helper::Set
 
