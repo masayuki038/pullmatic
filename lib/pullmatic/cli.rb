@@ -1,13 +1,50 @@
 module Pullmatic
   class CLI < Thor
     class_option :print, type: :boolean, desc: "Print STDOUT"
-    
-    desc "server", "Server spec"
-    def server
-      execute(Pullmatic::Resource::Server)
+
+
+    desc "export", "export server info as json/excel"
+    option :host, :required => true
+    option :user
+    option :password
+    option :sudo_password
+    option :format, default: "json"
+    def export
+      set :backend, "ssh"
+      set :host, options[:host]
+      ssh_options = {}
+      ssh_options[:user] = options[:user] if options[:user]
+      ssh_options[:password] = options[:password] if options[:password]
+      set :ssh_options, ssh_options
+      set :sudo_password, options[:sudo_password] if options[:sudo_password]
+
+      server = get_server
+      filesystem = get_filesystem
+      interface = get_interface
+      network = get_network
     end
 
     private
+
+    def shell
+      @shell ||= Thor::Base.shell.new
+    end
+
+    def get_server
+      execute(Pullmatic::Resource::Server)
+    end
+
+    def get_filesystem
+      execute(Pullmatic::Resource::Filesystem)
+    end
+
+    def get_interface
+      execute(Pullmatic::Resource::Interface)
+    end
+
+    def get_network
+      execute(Pullmatic::Resource::Network)
+    end
 
     def execute(klass)
       klass.execute
