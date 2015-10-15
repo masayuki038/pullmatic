@@ -10,7 +10,7 @@ module Pullmatic
         partitions = fs.map do |dev, spec|
           [[:name, dev], [:mount, spec["mount"]], [:type, spec["type"]], [:kb_size, spec["kb_size"].to_i], [:kb_used, spec["kb_used"].to_i], [:kb_available, spec["kb_available"].to_i], [:percent_used, spec["percent_used"]], [:mount, spec["mount"]]].to_h
         end
-        {:filesystem => partitions}
+        partitions
       end
     end
   end

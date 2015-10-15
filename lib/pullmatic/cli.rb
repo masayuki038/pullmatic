@@ -22,14 +22,15 @@ module Pullmatic
       filesystem = get_filesystem
       interface = get_interface
       network = get_network
-    end
 
-    private
+      puts Oj.dump({:server => server, :filesystem => filesystem, :interface => interface, :network => network}, {:indent => 1})
+    end
 
     def shell
       @shell ||= Thor::Base.shell.new
     end
 
+    desc "get_server", "get_server"
     def get_server
       execute(Pullmatic::Resource::Server)
     end
@@ -46,6 +47,7 @@ module Pullmatic
       execute(Pullmatic::Resource::Network)
     end
 
+    private
     def execute(klass)
       klass.execute
     end

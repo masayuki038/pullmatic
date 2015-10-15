@@ -1,5 +1,6 @@
 require 'pry'
 require 'thor'
+require 'oj'
 require 'specinfra'
 require 'specinfra/helper/set'
 require 'specinfra/helper/detect_os'

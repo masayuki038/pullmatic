@@ -6,15 +6,14 @@ module Pullmatic
       describe ".execute" do
         it "should generate filesystem" do
           ret = described_class.execute
-          expect(ret.keys).to include(:filesystem)
-          expect(ret[:filesystem].size).to eq(3)
-          expect(ret[:filesystem][0][:name]).to eq('/dev/xvda1')
-          expect(ret[:filesystem][0][:type]).to eq('ext4')
-          expect(ret[:filesystem][0][:kb_size]).to eq(10189112)
-          expect(ret[:filesystem][0][:kb_used]).to eq(6969052)
-          expect(ret[:filesystem][0][:kb_available]).to eq(2695828)
-          expect(ret[:filesystem][0][:percent_used]).to eq('73%')
-          expect(ret[:filesystem][0][:mount]).to eq('/')
+          expect(ret.size).to eq(3)
+          expect(ret[0][:name]).to eq('/dev/xvda1')
+          expect(ret[0][:type]).to eq('ext4')
+          expect(ret[0][:kb_size]).to eq(10189112)
+          expect(ret[0][:kb_used]).to eq(6969052)
+          expect(ret[0][:kb_available]).to eq(2695828)
+          expect(ret[0][:percent_used]).to eq('73%')
+          expect(ret[0][:mount]).to eq('/')
         end
       end
       before do

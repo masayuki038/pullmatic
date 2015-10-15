@@ -17,7 +17,7 @@ module Pullmatic
 
       describe "server" do
         let(:klass) { Pullmatic::Resource::Server }
-        let(:command) { :server }
+        let(:command) { :get_server }
 
         it_behaves_like "CLI examples"
       end

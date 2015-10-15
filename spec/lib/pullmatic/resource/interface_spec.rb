@@ -6,14 +6,13 @@ module Pullmatic
       describe ".execute" do
         it "should generate interface" do
           ret = described_class.execute
-          expect(ret.keys).to include(:interface)
-          expect(ret[:interface].keys.size).to eq(2)
-          expect(ret[:interface].keys).to include("lo")
-          expect(ret[:interface]["lo"][:ipv4]).to eq("127.0.0.1/8")
-          expect(ret[:interface]["lo"][:ipv6]).to eq("::1/128")
-          expect(ret[:interface].keys).to include("eth0")
-          expect(ret[:interface]["eth0"][:ipv4]).to eq("153.121.33.44/23")
-          expect(ret[:interface]["eth0"][:ipv6]).to eq("fe80::5054:dff:fe00:2267/64")
+          expect(ret.keys.size).to eq(2)
+          expect(ret.keys).to include("lo")
+          expect(ret["lo"][:ipv4]).to eq("127.0.0.1/8")
+          expect(ret["lo"][:ipv6]).to eq("::1/128")
+          expect(ret.keys).to include("eth0")
+          expect(ret["eth0"][:ipv4]).to eq("153.121.33.44/23")
+          expect(ret["eth0"][:ipv6]).to eq("fe80::5054:dff:fe00:2267/64")
         end
       end
       before do

@@ -6,8 +6,7 @@ module Pullmatic
       end
 
       def execute
-        ifs = host_inventory['interface']
-        {:interface => ifs}
+        host_inventory['interface']
       end
     end
   end
