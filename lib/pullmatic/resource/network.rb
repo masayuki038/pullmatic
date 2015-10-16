@@ -83,6 +83,7 @@ module Specinfra
         entries = {}
         chain = nil
         ret.each_line do |l|
+          l.chomp!
           case l
           when /^Chain INPUT/
             chain = :input
@@ -95,8 +96,8 @@ module Specinfra
           when /^Chain POSTROUTING/
             chain = :postrouting
           end
-          entries[chain] ||= ""
-          entries[chain] << l
+          entries[chain] ||= []
+          entries[chain] << l unless l =~ /^target/
         end
         entries
       end

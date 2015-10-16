@@ -62,17 +62,17 @@ EOF
           expect(ret[:iptables][:filter].keys).to include(:forward)
           expect(ret[:iptables][:filter].keys).to include(:output)
 
-          expect(ret[:iptables][:filter][:input]).to include("Chain INPUT (policy ACCEPT)")
-          expect(ret[:iptables][:filter][:input]).to include("ACCEPT     all")
-          expect(ret[:iptables][:filter][:input]).to include("icmp-host-prohibited")
+          expect(ret[:iptables][:filter][:input][0]).to include("Chain INPUT (policy ACCEPT)")
+          expect(ret[:iptables][:filter][:input][1]).to include("ACCEPT     all")
+          expect(ret[:iptables][:filter][:input][2]).to include("icmp-host-prohibited")
 
-          expect(ret[:iptables][:filter][:forward]).to include("Chain FORWARD (policy ACCEPT)")
-          expect(ret[:iptables][:filter][:forward]).to include("REJECT     all")
-          expect(ret[:iptables][:filter][:forward]).to include("icmp-host-prohibited")
+          expect(ret[:iptables][:filter][:forward][0]).to include("Chain FORWARD (policy ACCEPT)")
+          expect(ret[:iptables][:filter][:forward][1]).to include("REJECT     all")
+          expect(ret[:iptables][:filter][:forward][1]).to include("icmp-host-prohibited")
 
-          expect(ret[:iptables][:filter][:output]).to include("Chain OUTPUT (policy DROP)")
-          expect(ret[:iptables][:filter][:output]).to include("ACCEPT     all")
-          expect(ret[:iptables][:filter][:output]).to include("udp dpt:ntp")
+          expect(ret[:iptables][:filter][:output][0]).to include("Chain OUTPUT (policy DROP)")
+          expect(ret[:iptables][:filter][:output][1]).to include("ACCEPT     all")
+          expect(ret[:iptables][:filter][:output][2]).to include("udp dpt:ntp")
         end
         before do
           allow(Specinfra::Command::Linux::Base::Inventory).to receive(:get_iptables_filter).and_return(
@@ -108,13 +108,22 @@ EOF
           expect(ret[:iptables][:nat].keys).to include(:prerouting)
           expect(ret[:iptables][:nat].keys).to include(:postrouting)
 
-          expect(ret[:iptables][:nat][:input]).to include("Chain INPUT (policy ACCEPT)")
-          expect(ret[:iptables][:nat][:input]).to include("ACCEPT     all")
-          expect(ret[:iptables][:nat][:input]).to include("icmp-host-prohibited")
+          expect(ret[:iptables][:nat][:input][0]).to include("Chain INPUT (policy ACCEPT)")
+          expect(ret[:iptables][:nat][:input][1]).to include("ACCEPT     all")
+          expect(ret[:iptables][:nat][:input][2]).to include("icmp-host-prohibited")
 
-          expect(ret[:iptables][:nat][:output]).to include("Chain OUTPUT (policy DROP)")
-          expect(ret[:iptables][:nat][:output]).to include("ACCEPT     all")
-          expect(ret[:iptables][:nat][:output]).to include("udp dpt:ntp")
+          expect(ret[:iptables][:nat][:output][0]).to include("Chain OUTPUT (policy DROP)")
+          expect(ret[:iptables][:nat][:output][1]).to include("ACCEPT     all")
+          expect(ret[:iptables][:nat][:output][2]).to include("udp dpt:ntp")
+
+          expect(ret[:iptables][:nat][:prerouting][0]).to include("Chain PREROUTING (policy ACCEPT)")
+          expect(ret[:iptables][:nat][:prerouting][1]).to include("DNAT")
+
+          expect(ret[:iptables][:nat][:postrouting][0]).to include("Chain POSTROUTING (policy ACCEPT)")
+          expect(ret[:iptables][:nat][:postrouting][1]).to include("MASQUERADE")
+          expect(ret[:iptables][:nat][:postrouting][1]).to include("!10.0.3.0/24")
+          expect(ret[:iptables][:nat][:postrouting][2]).to include("MASQUERADE")
+          expect(ret[:iptables][:nat][:postrouting][2]).to include("!172.17.0.0/16")
         end
         before do
           allow(Specinfra::Command::Linux::Base::Inventory).to receive(:get_iptables_nat).and_return(
