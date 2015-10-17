@@ -30,27 +30,6 @@ EOF
 )       end
       end
 
-      describe "default_gateway" do
-        it "should generate about default gateway" do
-          ret = described_class.execute
-          expect(ret.keys).to include(:default_gateway)
-          expect(ret[:default_gateway].size).to eq(2)
-          expect(ret[:default_gateway][0]).to eq("default via 172.17.42.1 dev eth0")
-          expect(ret[:default_gateway][1]).to eq("default via 172.16.42.1 dev eth1")
-        end
-        before do
-          allow(Specinfra::Command::Linux::Base::Inventory).to receive(:get_default_gateway).and_return(
-<<EOF
-cat << EOF2
-default via 172.17.42.1 dev eth0
-172.17.0.0/16 dev eth0 proto kernel  scope link  src 172.17.1.5
-default via 172.16.42.1 dev eth1
-172.16.0.0/16 dev eth1 proto kernel  scope link  src 172.16.1.5
-EOF2
-EOF
-)       end
-      end
-
       describe "iptables" do
         it "should generate about iptables_filter" do
           ret = described_class.execute
