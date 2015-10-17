@@ -2,13 +2,11 @@ module Pullmatic
   class CLI < Thor
     class_option :print, type: :boolean, desc: "Print STDOUT"
 
-
     desc "export", "export server info as json/excel"
     option :host, :required => true
     option :user
     option :password
     option :sudo_password
-    option :format, default: "json", :type => :string, :enum => %w(json excel)
     def export
       set :backend, "ssh"
       set :host, options[:host]
@@ -26,9 +24,7 @@ module Pullmatic
       puts Oj.dump({:server => server, :filesystem => filesystem, :interface => interface, :network => network}, {:indent => 1})
     end
 
-    def shell
-      @shell ||= Thor::Base.shell.new
-    end
+    private
 
     desc "get_server", "get_server"
     def get_server
@@ -47,7 +43,6 @@ module Pullmatic
       execute(Pullmatic::Resource::Network)
     end
 
-    private
     def execute(klass)
       klass.execute
     end
