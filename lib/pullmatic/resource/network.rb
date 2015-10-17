@@ -9,7 +9,8 @@ module Pullmatic
         hosts = host_inventory['hosts']
         filter = host_inventory['iptables_filter']
         nat = host_inventory['iptables_nat']
-        {:hosts => hosts, :iptables => {:filter => filter, :nat => nat}}
+        resolv = host_inventory['resolv']
+        {:hosts => hosts, :iptables => {:filter => filter, :nat => nat}, :resolv => resolv}
       end
     end
   end
@@ -19,6 +20,10 @@ class Specinfra::Command::Linux::Base::Inventory
   class << self
     def get_hosts
       '/bin/cat /etc/hosts'
+    end
+
+    def get_resolv
+      '/bin/cat /etc/resolv.conf'
     end
 
     def get_iptables_filter
@@ -48,6 +53,26 @@ module Specinfra
         entries = []
         ret.split("\n").each do |l|
           entries << l if l =~ /^[^#]+/
+        end
+        entries
+      end
+    end
+
+    class Resolv < Base
+      def get
+        cmd = backend.command.get(:get_inventory_resolv)
+        ret = backend.run_command(cmd)
+        if ret.exit_status == 0
+          parse(ret.stdout)
+        else
+          nil
+        end
+      end
+
+      def parse(ret)
+        entries = []
+        ret.split("\n").each do |l|
+          entries << l if l =~ /^[^;]/
         end
         entries
       end
