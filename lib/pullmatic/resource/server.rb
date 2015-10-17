@@ -8,10 +8,56 @@ module Pullmatic
 
       def execute
         os_info = Specinfra.backend.os_info
-        se_cmd = Specinfra.backend.command.get(:check_selinux_has_mode, "enabled")
+        #se_cmd = Specinfra.backend.command.get(:check_selinux_has_mode, "enabled")
         hostname = host_inventory['hostname']
-        selinux = (Specinfra.backend.run_command(se_cmd).exit_status == 0) ? "enabled" : "disabled"
-        {:os_info => os_info, :hostname => hostname, :selinux => selinux}
+        #selinux = (Specinfra.backend.run_command(se_cmd).exit_status == 0) ? "enabled" : "disabled"
+        selinux = host_inventory['selinux']
+        timezone = host_inventory['timezone']
+        {:os_info => os_info, :hostname => hostname, :selinux => selinux, :timezone => timezone}
+      end
+    end
+  end
+end
+
+class Specinfra::Command::Linux::Base::Inventory
+  class << self
+    def get_selinux
+      Specinfra.backend.command.get(:check_selinux_has_mode, "enabled")
+    end
+
+    def get_timezone
+      '/bin/cat /etc/sysconfig/clock'
+    end
+  end
+end
+
+module Specinfra
+  class HostInventory
+    class Selinux < Base
+      def get
+        cmd = backend.command.get(:get_inventory_selinux)
+        ret = backend.run_command(cmd)
+        if ret.exit_status == 0
+          "enabled"
+        else
+          "disabled"
+        end
+      end
+    end
+
+    class Timezone < Base
+      def get
+        cmd = backend.command.get(:get_inventory_timezone)
+        ret = backend.run_command(cmd)
+        if ret.exit_status == 0
+          parse(ret.stdout)
+        else
+          nil
+        end
+      end
+
+      def parse(ret)
+        ret.split("\n")[0]
       end
     end
   end
