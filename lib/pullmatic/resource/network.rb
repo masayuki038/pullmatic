@@ -97,7 +97,7 @@ module Specinfra
             chain = :postrouting
           end
           entries[chain] ||= []
-          entries[chain] << l unless l =~ /^target/
+          entries[chain] << l unless (l =~ /^target/ || l.size == 0)
         end
         entries
       end
