@@ -27,7 +27,7 @@ class Specinfra::Command::Linux::Base::Inventory
   end
 end
 
-class Specinfra::Command::Redhat::V7::Inventory < Specinfra::Command::Base::Inventory
+class Specinfra::Command::Redhat::V7::Inventory < Specinfra::Command::Linux::Base::Inventory
   class << self
     def get_services
       '/usr/bin/systemctl list-units --type=service | /bin/grep -e "\.service"'

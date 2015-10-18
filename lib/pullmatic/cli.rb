@@ -9,6 +9,7 @@ module Pullmatic
     option :sudo_password
     def export
       set :backend, "ssh"
+      set :request_pty, true
       set :host, options[:host]
       ssh_options = {}
       ssh_options[:user] = options[:user] if options[:user]
