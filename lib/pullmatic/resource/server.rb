@@ -29,6 +29,14 @@ class Specinfra::Command::Linux::Base::Inventory
   end
 end
 
+class Specinfra::Command::Redhat::V7::Inventory < Specinfra::Command::Linux::Base::Inventory
+  class << self
+    def get_timezone
+      "timedatectl status | grep 'Timezone' | sed -e 's/^.*Timezone: \\(.*\\)$/\\1/'"
+    end
+  end
+end
+
 module Specinfra
   class HostInventory
     class Selinux < Base
