@@ -12,6 +12,7 @@ require "pullmatic/resource/server"
 require "pullmatic/resource/filesystem"
 require "pullmatic/resource/interface"
 require "pullmatic/resource/network"
+require "pullmatic/resource/user_group"
 
 include Specinfra::Helper::Set
 
