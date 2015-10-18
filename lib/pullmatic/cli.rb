@@ -20,8 +20,9 @@ module Pullmatic
       filesystem = get_filesystem
       interface = get_interface
       network = get_network
+      user_group = get_user_group
 
-      puts Oj.dump({:server => server, :filesystem => filesystem, :interface => interface, :network => network}, {:indent => 1})
+      puts Oj.dump({:server => server, :filesystem => filesystem, :interface => interface, :network => network, :user_group => user_group}, {:indent => 1})
     end
 
     private
@@ -41,6 +42,10 @@ module Pullmatic
 
     def get_network
       execute(Pullmatic::Resource::Network)
+    end
+
+    def get_user_group
+      execute(Pullmatic::Resource::UserGroup)
     end
 
     def execute(klass)
