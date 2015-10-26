@@ -11,7 +11,8 @@ module Pullmatic
         hostname = host_inventory['hostname']
         selinux = host_inventory['selinux']
         timezone = host_inventory['timezone']
-        {:os_info => os_info, :hostname => hostname, :selinux => selinux, :timezone => timezone}
+        uname = host_inventory['uname']
+        {:os_info => os_info, :hostname => hostname, :selinux => selinux, :timezone => timezone, :uname => uname}
       end
     end
   end
@@ -25,6 +26,10 @@ class Specinfra::Command::Linux::Base::Inventory
 
     def get_timezone
       '/bin/cat /etc/sysconfig/clock'
+    end
+
+    def get_uname
+      'uname -a'
     end
   end
 end
@@ -64,6 +69,18 @@ module Specinfra
 
       def parse(ret)
         ret.split("\n")[0]
+      end
+    end
+
+    class Uname < Base
+      def get
+        cmd = backend.command.get(:get_inventory_uname)
+        ret = backend.run_command(cmd)
+        if ret.exit_status == 0
+          ret.stdout.chomp
+        else
+          nil
+        end
       end
     end
   end
