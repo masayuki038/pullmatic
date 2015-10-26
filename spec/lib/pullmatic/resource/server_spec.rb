@@ -11,6 +11,11 @@ module Pullmatic
           ret = described_class.execute
           expect(ret[:os_info]).to eq({:family => "ubuntu", :release => "14.04", :arch => "x86_64"})
         end
+        before do
+          allow(Specinfra.backend).to receive(:os_info).and_return(
+            {:family => "ubuntu", :release => "14.04", :arch => "x86_64"}
+          )
+        end
       end
 
       describe ".execute" do
