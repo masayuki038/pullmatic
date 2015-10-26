@@ -1,6 +1,6 @@
 module Pullmatic
   module Resource
-    class Server
+    class Os
       include Specinfra::Helper::Set
       def self.execute
         self.new.execute

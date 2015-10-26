@@ -2,7 +2,7 @@ require 'spec_helper'
 
 module Pullmatic
   module Resource
-    describe Server do
+    describe Os do
       before do
         property[:host_inventory] = {}
       end

@@ -8,7 +8,7 @@ require 'specinfra/backend'
 
 require "pullmatic/version"
 require "pullmatic/cli"
-require "pullmatic/resource/server"
+require "pullmatic/resource/os"
 require "pullmatic/resource/filesystem"
 require "pullmatic/resource/interface"
 require "pullmatic/resource/network"
