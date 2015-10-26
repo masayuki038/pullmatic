@@ -17,21 +17,21 @@ module Pullmatic
       set :ssh_options, ssh_options
       set :sudo_password, options[:sudo_password] if options[:sudo_password]
 
-      server = get_server
+      os = get_os
       filesystem = get_filesystem
       interface = get_interface
       network = get_network
       user_group = get_user_group
       etc = get_etc
 
-      puts Oj.dump({:server => server, :filesystem => filesystem, :interface => interface, :network => network, :user_group => user_group, :etc => etc}, {:indent => 1})
+      puts Oj.dump({:os => os, :filesystem => filesystem, :interface => interface, :network => network, :user_group => user_group, :etc => etc}, {:indent => 1})
     end
 
     private
 
     desc "get_server", "get_server"
-    def get_server
-      execute(Pullmatic::Resource::Server)
+    def get_os
+      execute(Pullmatic::Resource::Os)
     end
 
     def get_filesystem
