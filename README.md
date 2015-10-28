@@ -2,6 +2,8 @@
 
 Pullmatic ia a tool for collecting server states and printing as JSON string via SSH.
 
+[![Build Status](https://travis-ci.org/masayuki038/pullmatic.png)](https://travis-ci.org/masayuki038/pullmatic)
+
 ## Installation
 
 Add this line to your application's Gemfile:
