@@ -9,8 +9,8 @@ Gem::Specification.new do |spec|
   spec.authors       = ['Masayuki Takahashi']
   spec.email         = ['masayuki038@gmail.com']
 
-  spec.summary       = %q{A tool to export linux server configurations.}
-  spec.description   = %q{A tool to export linux server configurations via ssh.}
+  spec.summary       = %q{A tool for collecting server states and printing as JSON string.}
+  spec.description   = %q{A tool for collecting server states and printing as JSON string via SSH.}
   spec.homepage      = ""
   spec.license       = "MIT"
 
