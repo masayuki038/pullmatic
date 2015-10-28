@@ -3,7 +3,7 @@
 Pullmatic ia a tool for collecting server states and printing as JSON string via SSH.
 
 [![Build Status](https://travis-ci.org/masayuki038/pullmatic.png)](https://travis-ci.org/masayuki038/pullmatic)
-[![Coverage Status](https://coveralls.io/repos/masayuki038/pullmatic/badge.png?branch=master)](https://coveralls.io/r/masayuki038/pullmatic?branch=master)
+[![Coverage Status](https://coveralls.io/repos/masayuki038/pullmatic/badge.svg?branch=master&service=github)](https://coveralls.io/github/masayuki038/pullmatic?branch=master)
 
 ## Installation
 
